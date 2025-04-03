@@ -52,7 +52,7 @@ const resolvers = {
         if (context.user) {
             const updatedUser = await User.findOneAndUpdate(
             { _id: context.user._id },
-            { $addToSet: { savedBooks: bookId, title, authors, description, image, link } },
+            { $addToSet: { savedBooks: {bookId, title, authors, description, image, link} } },
             { new: true, runValidators: true }
             );
             return updatedUser;
@@ -60,6 +60,18 @@ const resolvers = {
 
         throw new Error("You need to be logged in!");
         },
+        
+        removeBook: async (_parent: any, { bookId }: { bookId: string }, context: any) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId } } },
+                    { new: true }
+                );
+                return updatedUser;
+            }
+            throw new Error("You need to be logged in!");
+        }
     },
 }
 
