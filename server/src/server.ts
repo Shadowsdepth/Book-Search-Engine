@@ -8,6 +8,14 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './services/auth.js';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// In ES Modules (ESM) you would do:
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
 const server = new ApolloServer({
   typeDefs,
   resolvers
